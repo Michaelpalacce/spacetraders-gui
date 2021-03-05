@@ -1,9 +1,8 @@
 <template>
-	<div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800">
-		<div class="px-6 py-4 text-white">
-			<div class="font-bold text-xl mb-2">Ships:</div>
+	<CardWrapper>
+		<div class="text-white">
+			<div class="font-bold text-xl mb-10">Ships:</div>
 			<div v-for="ship in playerDataResponse.ships">
-				{{ship}}
 				<p class="text-base mb-1 mt-5">Type: {{ ship.type }}</p>
 				<p class="text-base mb-1">Max Cargo: {{ ship.maxCargo }}</p>
 				<p class="text-base mb-1">Speed: {{ ship.speed }}</p>
@@ -15,13 +14,18 @@
 				<hr>
 			</div>
 		</div>
-	</div>
+	</CardWrapper>
 </template>
 
 <script>
-import api from './models/api'
+import api			from './models/api'
+import CardWrapper	from "./general/CardWrapper.vue";
 
 export default {
+	components: {
+		CardWrapper
+	},
+
 	data ()
 	{
 		return {

@@ -6,22 +6,32 @@
 			<Status />
 		</div>
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
-			<Login />
+			<Registration />
 		</div>
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
-			<PlayerInfo />
+			<Login />
 		</div>
 	</div>
 
 	<div class="flex flex-wrap">
+		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
+			<PlayerInfo />
+		</div>
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
 			<GetLoan />
 		</div>
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
 			<GetShips />
 		</div>
+	</div>
+
+	<div class="flex flex-wrap">
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
 			<Ships />
+		</div>
+		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
+		</div>
+		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
 		</div>
 	</div>
 
@@ -35,10 +45,12 @@ import PlayerInfo	from './components/PlayerInfo.vue'
 import GetLoan		from './components/GetLoan.vue'
 import GetShips		from './components/GetShips.vue'
 import Ships		from './components/Ships.vue'
+import Registration from "./components/Registration.vue";
 
 export default {
 	name		: 'App',
 	components	: {
+		Registration,
 		NavBar,
 		PlayerInfo,
 		Status,

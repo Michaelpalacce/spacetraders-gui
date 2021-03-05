@@ -1,25 +1,30 @@
 <template>
-		<div class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 flex flex-col max-w-sm">
-			<div class="mb-4">
-				<label class="block text-gray-200 text-sm font-bold mb-2" for="username">
-					Paste Token:
-				</label>
-				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="token" type="text" placeholder="Token" v-bind:value="token" v-on:change="setToken">
-			</div>
-			<div class="mb-4">
-				<label class="block text-gray-200 text-sm font-bold mb-2" for="username">
-					Username:
-				</label>
-				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username" v-bind:value="username" v-on:change="setUsername">
-			</div>
+	<CardWrapper>
+		<div class="mb-4">
+			<label class="block text-gray-200 text-sm font-bold mb-2" for="username">
+				Paste Token:
+			</label>
+			<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="token" type="text" placeholder="Token" v-bind:value="token" v-on:change="setToken( $event.target.value )">
 		</div>
+		<div class="mb-4">
+			<label class="block text-gray-200 text-sm font-bold mb-2" for="username">
+				Username:
+			</label>
+			<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username" v-bind:value="username" v-on:change="setUsername( $event.target.value )">
+		</div>
+	</CardWrapper>
 </template>
 
 <script>
-import api from './models/api'
+import api			from './models/api'
+import CardWrapper	from "./general/CardWrapper.vue";
 
 export default {
 	name: "Login",
+	components: {
+		CardWrapper
+	},
+
 	data ()
 	{
 		return {
@@ -28,18 +33,25 @@ export default {
 		}
 	},
 
+	created() {
+		this.emitter.on( 'user.register', ( { username, token } ) => {
+			this.setToken( token );
+			this.setUsername( username );
+		});
+	},
+
 	methods:
 	{
-		setToken( event )
+		setToken( token )
 		{
-			this.token			= event.target.value;
+			this.token			= token;
 			localStorage.token	= this.token;
 			this.attemptLogin();
 		},
 
-		setUsername( event )
+		setUsername( username )
 		{
-			this.username			= event.target.value;
+			this.username			= username;
 			localStorage.username	= this.username;
 			this.attemptLogin();
 		},
@@ -51,7 +63,7 @@ export default {
 				const auth	= { token: this.token, username: this.username };
 				api.setCredentials( auth );
 
-				this.emitter.emit( 'login.all-set' );
+				this.emitter.emit( 'user.login' );
 			}
 		}
 	}

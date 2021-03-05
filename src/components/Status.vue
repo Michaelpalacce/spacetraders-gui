@@ -1,18 +1,22 @@
 <template>
-	<div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800">
-		<div class="px-6 py-4 text-white">
-			<div class="font-bold text-xl mb-2">Server status</div>
+	<CardWrapper>
+		<div class="text-white">
+			<div class="font-bold text-xl mb-10">Server status</div>
 			<p class="text-base">
 				{{ status }}
 			</p>
 		</div>
-	</div>
+	</CardWrapper>
 </template>
 
 <script>
-import api from './models/api'
+import api			from './models/api'
+import CardWrapper	from "./general/CardWrapper.vue";
 
 export default {
+	components: {
+		CardWrapper
+	},
 	data ()
 	{
 		return {

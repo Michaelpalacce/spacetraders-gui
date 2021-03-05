@@ -4,11 +4,14 @@ export default {
 	endpoint	: 'https://api.spacetraders.io',
 	urls		: {
 		gameStatus		: '/game/status',
+		registerUser	: '/users/:username:/token',
 		playerData		: '/users/:username:?token=:token:',
 		loans			: '/game/loans?token=:token:',
 		takeLoan		: '/users/:username:/loans?token=:token:',
 		getShips		: '/game/ships?token=:token:&class=:class:',
 		purchaseShip	: '/users/:username:/ships?token=:token:',
+		purchaseGood	: '/users/:username:/purchase-orders?token=:token:',
+		sellGood		: '/users/:username:/sell-orders?token=:token:',
 	},
 
 	auth		: {
@@ -76,6 +79,20 @@ export default {
 	},
 
 	/**
+	 * @brief	Registers a new user and returns the token
+	 *
+	 * @param	{String} username
+	 *
+	 * @returns	{Promise<void>}
+	 */
+	async registerUser( username )
+	{
+		const registerUserResponse	= await axios.post( this.getUrl( 'registerUser', { username } ) ).catch(() => { return null });
+
+		return registerUserResponse === null ? registerUserResponse : registerUserResponse.data.token;
+	},
+
+	/**
 	 * @brief	Gets player data
 	 *
 	 * @return	{Promise<Object>}
@@ -134,4 +151,34 @@ export default {
 	{
 		return await axios.post( this.getUrl( 'purchaseShip', this.auth ), data );
 	},
+
+	/**
+	 * @brief	Purchases the given good type
+	 *
+	 * @param	{String} shipId
+	 * @param	{String} good
+	 * @param	{Number} quantity
+	 *
+	 * @return	{Promise<Object>}
+	 */
+	async purchaseGood( shipId, good, quantity )
+	{
+		return await axios.post( this.getUrl( 'purchaseGood', this.auth ), { shipId, good, quantity } );
+	},
+
+	/**
+	 * @brief	Sells the given good type
+	 *
+	 * @param	{String} shipId
+	 * @param	{String} good
+	 * @param	{Number} quantity
+	 *
+	 * @return	{Promise<Object>}
+	 */
+	async sellGood( shipId, good, quantity )
+	{
+		return await axios.post( this.getUrl( 'purchaseGood', this.auth ), { shipId, good, quantity } );
+	},
+
+
 }

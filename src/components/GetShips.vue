@@ -1,7 +1,7 @@
 <template>
-	<div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800">
-		<div class="px-6 py-4 text-white">
-			<div class="font-bold text-xl mb-2">Purchase Ship:</div>
+	<CardWrapper>
+		<div class="text-white">
+			<div class="font-bold text-xl mb-10">Purchase Ship:</div>
 			<div v-for="ship in availableShips">
 				<p class="text-base mb-1 mt-5">Type: {{ ship.type }}</p>
 				<p class="text-base mb-1">Max Cargo: {{ ship.maxCargo }}</p>
@@ -9,6 +9,9 @@
 				<p class="text-base mb-1">Manufacturer: {{ ship.manufacturer }}</p>
 				<p class="text-base mb-1">Plating: {{ ship.plating }}</p>
 				<p class="text-base mb-1">Weapons: {{ ship.weapons }}</p>
+				<p class="text-base mb-1">Docking Efficiency: {{ ship.dockingEfficiency }}</p>
+				<p class="text-base mb-1">Fuel Efficiency: {{ ship.fuelEfficiency }}</p>
+				<p class="text-base mb-1">Maintenance: {{ ship.maintenance }}</p>
 				<p class="text-base mb-1">Locations:</p>
 				<div class="flex flex-wrap" v-for="location in ship.purchaseLocations">
 					<div class="w-full sm:w-1/2 md:w-1/3 mb-3 mt-3 p-2">
@@ -24,17 +27,22 @@
 				<div class="mb-10"></div>
 				<hr>
 			</div>
-			<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right mb-5 mt-5" v-on:click="refreshShips">
+			<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right" v-on:click="refreshShips">
 				Refresh Ships
 			</button>
 		</div>
-	</div>
+	</CardWrapper>
 </template>
 
 <script>
-import api from './models/api'
+import api			from './models/api'
+import CardWrapper	from "./general/CardWrapper.vue";
 
 export default {
+	components:{
+		CardWrapper
+	},
+
 	data ()
 	{
 		return {
