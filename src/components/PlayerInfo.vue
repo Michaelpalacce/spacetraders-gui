@@ -14,9 +14,14 @@
 		</div>
 		<div class="px-6 py-4 text-white">
 			<div class="font-bold text-xl mb-2">Loans:</div>
-			<p class="text-base">
-				<li v-for="loan in playerDataResponse.loans">{{ loan }}</li>
-			</p>
+			<div v-for="loan in playerDataResponse.loans">
+				<p class="text-base mb-1 mt-5">Type: {{ loan.type }}</p>
+				<p class="text-base mb-1">Status: {{ loan.status }}</p>
+				<p class="text-base mb-1">Due Date: {{ loan.due }}</p>
+				<p class="text-base mb-1">Amount Left: {{ loan.repaymentAmount }}</p>
+				<div class="mb-10"></div>
+				<hr>
+			</div>
 		</div>
 	</div>
 </template>
@@ -35,6 +40,8 @@ export default {
 	created()
 	{
 		this.emitter.on( 'login.all-set', this.refreshData );
+		this.emitter.on( 'loan.new', this.refreshData );
+		this.emitter.on( 'ship.new', this.refreshData );
 
 		this.refreshData();
 	},

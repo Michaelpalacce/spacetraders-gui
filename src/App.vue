@@ -17,6 +17,12 @@
 		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
 			<GetLoan />
 		</div>
+		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
+			<GetShips />
+		</div>
+		<div class="w-full sm:w-1/2 md:w-1/3 mb-4">
+			<Ships />
+		</div>
 	</div>
 
 </template>
@@ -27,6 +33,8 @@ import NavBar		from './components/Navbar.vue'
 import Login		from './components/Login.vue'
 import PlayerInfo	from './components/PlayerInfo.vue'
 import GetLoan		from './components/GetLoan.vue'
+import GetShips		from './components/GetShips.vue'
+import Ships		from './components/Ships.vue'
 
 export default {
 	name		: 'App',
@@ -35,6 +43,8 @@ export default {
 		PlayerInfo,
 		Status,
 		GetLoan,
+		GetShips,
+		Ships,
 		Login
 	},
 

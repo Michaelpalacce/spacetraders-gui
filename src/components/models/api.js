@@ -3,9 +3,12 @@ import axios	from 'axios';
 export default {
 	endpoint	: 'https://api.spacetraders.io',
 	urls		: {
-		gameStatus	: '/game/status',
-		playerData	: '/users/:username:?token=:token:',
-		loans		: '/game/loans?token=:token:',
+		gameStatus		: '/game/status',
+		playerData		: '/users/:username:?token=:token:',
+		loans			: '/game/loans?token=:token:',
+		takeLoan		: '/users/:username:/loans?token=:token:',
+		getShips		: '/game/ships?token=:token:&class=:class:',
+		purchaseShip	: '/users/:username:/ships?token=:token:',
 	},
 
 	auth		: {
@@ -34,7 +37,7 @@ export default {
 			formattedUrl	= formattedUrl.replace( `:${param}:`, value );
 		}
 
-		return `${this.endpoint}${formattedUrl}`
+		return `${this.endpoint}${formattedUrl}`;
 	},
 
 	/**
@@ -84,11 +87,51 @@ export default {
 		return playerDataResponse.data.user;
 	},
 
+	/**
+	 * @brief	Gets a list of all available loans
+	 *
+	 * @return	{Promise<string>}
+	 */
 	async getAvailableLoans()
 	{
 		const loansResponse	= await axios.get( this.getUrl( 'loans', this.auth ) );
 
 		return loansResponse.data.loans;
+	},
 
-	}
+	/**
+	 * @brief	Gets a list of all available loans
+	 *
+	 * @param	{String} type
+	 *
+	 * @return	{Promise<string>}
+	 */
+	async takeOutLoan( type )
+	{
+		return await axios.post( this.getUrl( 'takeLoan', this.auth ), { type } );
+	},
+
+	/**
+	 * @brief	Gets a list of all available ships to purchase
+	 *
+	 * @return	{Promise<string>}
+	 */
+	async getShips( shipClass = 'MK-I' )
+	{
+		const shipsResponse	= await axios.get( this.getUrl( 'getShips', { ...this.auth, ...{ class: shipClass } } ) );
+
+		return shipsResponse.data.ships;
+	},
+
+	/**
+	 * @brief	Purchases the given ship
+	 *
+	 * @param	{Object} data
+	 *
+	 * @return	{Promise<string>}
+	 */
+	async purchaseShip( data )
+	{
+		return await axios.post( this.getUrl( 'purchaseShip', this.auth ), data );
+	},
 }
