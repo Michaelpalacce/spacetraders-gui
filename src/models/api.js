@@ -3,15 +3,17 @@ import axios	from 'axios';
 export default {
 	endpoint	: 'https://api.spacetraders.io',
 	urls		: {
-		gameStatus		: '/game/status',
-		registerUser	: '/users/:username:/token',
-		playerData		: '/users/:username:?token=:token:',
-		loans			: '/game/loans?token=:token:',
-		takeLoan		: '/users/:username:/loans?token=:token:',
-		getShips		: '/game/ships?token=:token:&class=:class:',
-		purchaseShip	: '/users/:username:/ships?token=:token:',
-		purchaseGood	: '/users/:username:/purchase-orders?token=:token:',
-		sellGood		: '/users/:username:/sell-orders?token=:token:',
+		gameStatus			: '/game/status',
+		registerUser		: '/users/:username:/token',
+		playerData			: '/users/:username:?token=:token:',
+		loans				: '/game/loans?token=:token:',
+		takeLoan			: '/users/:username:/loans?token=:token:',
+		getShips			: '/game/ships?token=:token:&class=:class:',
+		purchaseShip		: '/users/:username:/ships?token=:token:',
+		purchaseGood		: '/users/:username:/purchase-orders?token=:token:',
+		sellGood			: '/users/:username:/sell-orders?token=:token:',
+		getLocation			: '/game/systems/OE/locations?token=:token:&type=:type:',
+		createFlightPlan	: '/users/:username:/flight-plans?token=:token:',
 	},
 
 	auth		: {
@@ -180,5 +182,31 @@ export default {
 		return await axios.post( this.getUrl( 'purchaseGood', this.auth ), { shipId, good, quantity } );
 	},
 
+	/**
+	 * @brief	Finds a location
+	 *
+	 * @details	Avaialble locations:
+	 * 			- ASTEROID
+	 *
+	 * @param	{String} type
+	 *
+	 * @return	{Promise<Object>}
+	 */
+	async getLocation( type )
+	{
+		return await axios.get( this.getUrl( 'getLocation', { ...this.auth, type } ) );
+	},
 
+	/**
+	 * @brief	Creates a new flight plan
+	 *
+	 * @param	{String} shipId
+	 * @param	{String} destination
+	 *
+	 * @return	{Promise<Object>}
+	 */
+	async createFlightPlan( shipId, destination )
+	{
+		return await axios.post( this.getUrl( 'createFlightPlan', this.auth ), { shipId, destination } );
+	},
 }

@@ -4,15 +4,11 @@
 
 		<div class="text-white" :class="{ hidden: !isLoaderHidden }">
 			<div class="font-bold text-xl mb-10">Ships:</div>
-			<div v-for="ship in ships">
-				<p class="text-base mb-1 mt-5">Type: {{ ship.manufacturer }} {{ ship.type }}</p>
-				<p class="text-base mb-1">Max Cargo: {{ ship.maxCargo }}</p>
-				<p class="text-base mb-1">Speed: {{ ship.speed }}</p>
-				<p class="text-base mb-1">Plating: {{ ship.plating }}</p>
-				<p class="text-base mb-1">Weapons: {{ ship.weapons }}</p>
-				<p class="text-base mb-1">Cargo(needs work): {{ ship.cargo }}</p>
-				<div class="mb-10"></div>
-				<hr>
+			<div v-for="ship in ships" class="mb-8">
+				<router-link class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" :to="`/ship/${ship.id}`">{{ ship.manufacturer }} {{ ship.type }}: <span class="text-blue-200">{{ship.fuel}} FUEL</span></router-link>
+				<button class="float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 50)">+50 fuel</button>
+				<button class="mr-5 float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 20)">+20 fuel</button>
+				<button class="mr-5 float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 10)">+10 fuel</button>
 			</div>
 		</div>
 	</CardWrapper>
@@ -57,8 +53,34 @@ export default {
 					});
 
 					this.isLoaderHidden	= true;
-					this.ships			= typeof response !== "undefined" ? response.ships : [];
+					const ships			= typeof response !== "undefined" ? response.ships : [];
+					this.ships			= ships.map(( ship )=>{
+						let fuel	= 0;
+						for ( const cargo of ship.cargo )
+						{
+							if ( cargo.good === 'FUEL' )
+							{
+								fuel	= cargo.quantity;
+								break;
+							}
+						}
+
+						return { ...ship, fuel };
+					});
 				}
+			},
+
+			async purchaseFuelForShip( shipId, amount )
+			{
+				const purchaseResponse	= await api.purchaseGood( shipId, 'FUEL', amount ).catch(() => {
+					return null;
+				});
+
+				if ( purchaseResponse === null )
+					return;
+
+				this.emitter.emit( 'user.refresh' );
+				this.refreshData();
 			}
 		}
 }

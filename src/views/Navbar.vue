@@ -1,19 +1,32 @@
 <template>
-	<div class="flex mb-4 p-5">
-		<div class="w-1/2 h-12">
-			<div class="w-full block flex-grow lg:items-center lg:w-auto text-white">
-				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/">Login</router-link>
-				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/register">Register</router-link>
-				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/loans">Loans</router-link>
-				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/ships">Ships</router-link>
+	<nav class="bg-gray-800">
+		<div class="max-w-7xl mx-auto relative flex items-center justify-between sm:items-stretch sm:justify-start p-3">
+			<div class="hidden sm:block sm:ml-6">
+				<div class="flex space-x-4">
+					<router-link class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" to="/">Login</router-link>
+					<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" to="/register">Register</router-link>
+					<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" to="/loans">Loans</router-link>
+					<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" to="/ships">Ships</router-link>
+				</div>
 			</div>
 		</div>
-		<div class="w-1/2 h-12">
-			<div class=" text-white float-right mb-10">
-				<span class="text-blue-300 mr-2">{{playerDataResponse.username}}</span>
-				| <span class="text-green-300 ml-2 mr-2">CR {{ playerDataResponse.credits }}</span>
-				| <span class="ml-2" :class="serverStatusColor">{{ serverStatus }}</span>
+
+		<!-- Mobile menu, show/hide based on menu state. -->
+		<div class="sm:hidden" id="mobile-menu">
+			<div class="px-2 pt-2 pb-3 space-y-1">
+				<router-link class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" to="/">Login</router-link>
+				<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" to="/register">Register</router-link>
+				<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" to="/loans">Loans</router-link>
+				<router-link class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" to="/ships">Ships</router-link>
 			</div>
+		</div>
+	</nav>
+
+	<div class="w-full float-right mr-5">
+		<div class="text-white float-right mb-10">
+			<span class="text-blue-300 mr-2">{{playerDataResponse.username}}</span>
+			| <span class="text-green-300 ml-2 mr-2">CR {{ playerDataResponse.credits }}</span>
+			| <span class="ml-2" :class="serverStatusColor">{{ serverStatus }}</span>
 		</div>
 	</div>
 </template>

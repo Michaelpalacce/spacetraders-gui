@@ -3,8 +3,9 @@ import Login								from "@/views/User/Login.vue";
 import Register								from "@/views/User/Register.vue";
 import Loans								from "@/views/Game/Loans.vue";
 import Ships								from "@/views/Game/Ships.vue";
+import Ship									from "@/views/Game/Ships/Ship.vue";
 
-const routes = [
+const routes	= [
 	{
 		path: "/",
 		name: "Login",
@@ -25,6 +26,12 @@ const routes = [
 		name: "Ships",
 		component: Ships
 	},
+	{
+		path: "/ship/:id",
+		name: "Ship",
+		component: Ship,
+		props: true
+	}
 ];
 
 const router	= createRouter({
