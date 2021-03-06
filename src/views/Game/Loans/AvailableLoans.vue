@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import api			from "../../../components/models/api";
-import CardWrapper	from "../../../components/general/CardWrapper.vue";
+import api			from "../../../models/api";
+import CardWrapper	from "../../Components/CardWrapper.vue";
 
 export default {
 	components:{
@@ -59,7 +59,10 @@ export default {
 			});
 
 			if ( loanResponse !== null )
+			{
+				this.emitter.emit( 'user.refresh' );
 				this.emitter.emit( 'loan.new' );
+			}
 
 			this.availableLoans	= [];
 		}

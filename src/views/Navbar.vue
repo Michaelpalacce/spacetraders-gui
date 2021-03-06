@@ -5,6 +5,7 @@
 				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/">Login</router-link>
 				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/register">Register</router-link>
 				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/loans">Loans</router-link>
+				<router-link class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4" to="/ships">Ships</router-link>
 			</div>
 		</div>
 		<div class="w-1/2 h-12">
@@ -18,8 +19,8 @@
 </template>
 
 <script>
-import api			from "../components/models/api";
-import CardWrapper	from "../components/general/CardWrapper.vue";
+import api			from "../models/api";
+import CardWrapper	from "./Components/CardWrapper.vue";
 
 export default {
 	name: 'Navbar',

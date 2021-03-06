@@ -1,6 +1,8 @@
 <template>
 	<CardWrapper>
-		<span class="text-white mb-3">
+		<Loader :isHidden="isLoaderHidden"></Loader>
+
+		<span class="text-white mb-3" :class="{ hidden: !isLoaderHidden }">
 			Loans:
 			<br>
 			<div v-for="loan in loans">
@@ -11,24 +13,29 @@
 </template>
 
 <script>
-import CardWrapper	from "../../../components/general/CardWrapper.vue";
-import api			from "../../../components/models/api";
+import CardWrapper	from "../../Components/CardWrapper.vue";
+import Loader		from "../../Components/Loader.vue";
+import api			from "../../../models/api";
 import moment		from "moment";
 
 export default {
 	name: "CurrentLoans",
 	components: {
-		CardWrapper
+		CardWrapper,
+		Loader
 	},
 
 	data()
 	{
 		return {
-			loans	: []
+			loans			: [],
+			isLoaderHidden	: false
 		}
 	},
 
 	created() {
+		this.emitter.on( 'loan.new', this.refreshData )
+
 		this.refreshData();
 	},
 
@@ -36,15 +43,17 @@ export default {
 	{
 		async refreshData()
 		{
+			this.isLoaderHidden	= false;
+
 			if ( api.hasCredentials() )
 			{
 				const playerDataResponse	= await api.getPlayerData().catch(() => {
 					return {};
 				});
+				this.isLoaderHidden			= true;
 
-				const loans	= typeof playerDataResponse.loans !== "undefined" ? playerDataResponse.loans : [];
-
-				this.loans	= loans.map(( loan ) => {
+				const loans					= typeof playerDataResponse.loans !== "undefined" ? playerDataResponse.loans : [];
+				this.loans					= loans.map(( loan ) => {
 					loan.due	= moment( loan.due ).format( 'MMMM Do, h:mm:ss a' );
 
 					return loan;

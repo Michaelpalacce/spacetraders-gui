@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import api	from "../../components/models/api";
+import api	from "../../models/api";
 
 export default {
 	name: "Login",
@@ -60,7 +60,7 @@ export default {
 					const auth	= { token: this.token, username: this.username };
 					api.setCredentials( auth );
 
-					this.emitter.emit( 'user.login' );
+					this.emitter.emit( 'user.refresh' );
 				}
 			}
 		}

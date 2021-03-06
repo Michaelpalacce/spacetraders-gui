@@ -14,7 +14,7 @@
 
 
 <script>
-import api	from "../../components/models/api";
+import api	from "../../models/api";
 
 export default {
 	name: "Register",
@@ -30,6 +30,9 @@ export default {
 		{
 			registerUser( event )
 			{
+				const element	= event.target;
+				element.classList.add( 'pointer-events-none' );
+
 				api.registerUser( this.username ).then(( token ) => {
 					if ( token === null )
 					{
@@ -37,15 +40,14 @@ export default {
 						return;
 					}
 
-					localStorage.username	= this.username;
-					localStorage.token		= token;
-
 					this.emitter.emit( 'user.register', { username: this.username, token } );
-
 					this.username	= '';
+
+					this.$router.push( '/' );
 				}).catch(( error ) => {
 					console.log( error );
 					this.username	= '';
+					element.classList.remove( 'pointer-events-none' );
 				});
 			}
 		}
