@@ -5,7 +5,11 @@
 		<div class="text-white" :class="{ hidden: !isLoaderHidden }">
 			<div class="font-bold text-xl mb-10">Ships:</div>
 			<div v-for="ship in ships" class="mb-8">
-				<router-link class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" :to="`/ship/${ship.id}`">{{ ship.manufacturer }} {{ ship.type }}: <span class="text-blue-200">{{ship.fuel}} FUEL</span></router-link>
+				<router-link class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" :to="`/ship/${ship.id}`">
+					{{ ship.manufacturer }} {{ ship.type }}
+					<span class="ml-3 text-blue-200">{{ship.fuel}} FUEL</span>
+					<span class="ml-3 text-green-200">@ {{typeof ship.location === 'undefined' ? 'IN TRANSIT' : ship.location }}</span>
+				</router-link>
 				<button class="float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 50)">+50 fuel</button>
 				<button class="mr-5 float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 20)">+20 fuel</button>
 				<button class="mr-5 float-right text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="purchaseFuelForShip(ship.id, 10)">+10 fuel</button>

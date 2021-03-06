@@ -6,8 +6,8 @@
 			Asteroid
 			<div class="mt-5" v-if="asteroid !== null">
 				<span>{{ asteroid.name }}: {{ asteroid.symbol }}</span> <span class="ml-5">X{{asteroid.x}} Y{{asteroid.y}}</span>
-				<button v-if="inTransit" class="ml-5 text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="planRoute( shipId, asteroid.symbol )">ROUTE</button>
-				<button v-else class="ml-5 text-blue-200 pointer-events-none" aria-hidden="true">IN TRANSIT</button>
+				<button class="ml-5 text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="planRoute( shipId, asteroid.symbol )">ROUTE</button>
+				<button class="ml-5 text-blue-200 hover:text-blue-500 cursor-pointer" aria-hidden="true" v-on:click="mine( shipId )">MINE x10</button>
 			</div>
 		</div>
 	</CardWrapper>
@@ -33,8 +33,7 @@ export default {
 	{
 		return {
 			isLoaderHidden	: true,
-			asteroid		: null,
-			inTransit		: true
+			asteroid		: null
 		}
 	},
 
@@ -76,6 +75,18 @@ export default {
 				return;
 
 			this.inTransit	= true;
+		},
+
+		async mine( shipId )
+		{
+			const mineResponse	= await api.purchaseGood( shipId, 'METALS', 10 ).catch(( error ) => {
+				return null;
+			});
+
+			if ( mineResponse === null )
+				return;
+
+			this.emitter.emit( `${this.shipId}.refresh` );
 		}
 	}
 }

@@ -3,8 +3,12 @@
 		<Loader :isHidden="isLoaderHidden"></Loader>
 
 		<div class="text-white" :class="{ hidden: !isLoaderHidden }">
-			<div class="font-bold text-xl mb-10">{{ ship.manufacturer }} {{ ship.type }}</div>
-			<p class="text-base mb-1">Max Cargo: {{ ship.maxCargo }}</p>
+			<div class="font-bold text-xl mb-10">
+				{{ ship.manufacturer }} {{ ship.type }}
+				<span class="ml-3 text-blue-200">{{ship.fuel}} FUEL</span>
+				<span class="ml-3 text-green-200">@ {{typeof ship.location === 'undefined' ? 'IN TRANSIT' : ship.location }}</span>
+			</div>
+			<p class="text-base mb-1">Cargo: {{ship.spaceAvailable}}/{{ ship.maxCargo }}</p>
 			<p class="text-base mb-1">Speed: {{ ship.speed }}</p>
 			<p class="text-base mb-1">Plating: {{ ship.plating }}</p>
 			<p class="text-base mb-1">Weapons: {{ ship.weapons }}</p>
@@ -13,7 +17,9 @@
 
 	<CardWrapper>
 		<div class="text-white">
-			{{ ship.cargo }}
+			<ul v-for="cargo in ship.cargo">
+				<li class="text-indigo-300">{{cargo.good}} : {{cargo.quantity}}</li>
+			</ul>
 		</div>
 	</CardWrapper>
 
@@ -46,6 +52,7 @@ export default {
 	created()
 	{
 		this.shipId	= this.$route.params.id;
+		this.emitter.on( `${this.shipId}.refresh`, this.getShipData );
 		this.getShipData();
 	},
 
@@ -64,11 +71,30 @@ export default {
 					if ( response === null )
 						return;
 
-					let ships			= typeof response !== "undefined" ? response.ships : [];
-					ships				= ships.filter(( ship ) => {
-						return this.shipId	=== ship.id;
+					let ships	= typeof response !== "undefined" ? response.ships : [];
+					let found	= false;
+
+					ships.filter(( ship ) => {
+						if ( this.shipId !== ship.id )
+							return false;
+
+						let fuel	= 0;
+						for ( const cargo of ship.cargo )
+						{
+							if ( cargo.good === 'FUEL' )
+							{
+								fuel	= cargo.quantity;
+								break;
+							}
+						}
+
+						this.ship		= { ...ship, fuel };
+						return found	= true;
 					});
-					this.ship			= ships[0];
+
+					if ( ! found )
+						this.$router.push( '/ships' );
+
 					this.isLoaderHidden	= true;
 				}
 			}
