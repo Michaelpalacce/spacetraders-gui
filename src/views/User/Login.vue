@@ -1,8 +1,9 @@
 <template>
-	<CardWrapper>
+	<div class="m-auto w-1/2">
+		<p class="text-white mb-4">Paste Credentials (no need to click anything)</p>
 		<div class="mb-4">
 			<label class="block text-gray-200 text-sm font-bold mb-2" for="username">
-				Paste Token:
+				Token:
 			</label>
 			<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="token" type="text" placeholder="Token" v-bind:value="token" v-on:change="setToken( $event.target.value )">
 		</div>
@@ -12,18 +13,14 @@
 			</label>
 			<input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username" v-bind:value="username" v-on:change="setUsername( $event.target.value )">
 		</div>
-	</CardWrapper>
+	</div>
 </template>
 
 <script>
-import api			from './models/api'
-import CardWrapper	from "./general/CardWrapper.vue";
+import api	from "../../components/models/api";
 
 export default {
 	name: "Login",
-	components: {
-		CardWrapper
-	},
 
 	data ()
 	{
@@ -41,31 +38,35 @@ export default {
 	},
 
 	methods:
-	{
-		setToken( token )
 		{
-			this.token			= token;
-			localStorage.token	= this.token;
-			this.attemptLogin();
-		},
-
-		setUsername( username )
-		{
-			this.username			= username;
-			localStorage.username	= this.username;
-			this.attemptLogin();
-		},
-
-		attemptLogin()
-		{
-			if ( localStorage.username && localStorage.token )
+			setToken( token )
 			{
-				const auth	= { token: this.token, username: this.username };
-				api.setCredentials( auth );
+				this.token			= token;
+				localStorage.token	= this.token;
+				this.attemptLogin();
+			},
 
-				this.emitter.emit( 'user.login' );
+			setUsername( username )
+			{
+				this.username			= username;
+				localStorage.username	= this.username;
+				this.attemptLogin();
+			},
+
+			attemptLogin()
+			{
+				if ( localStorage.username && localStorage.token )
+				{
+					const auth	= { token: this.token, username: this.username };
+					api.setCredentials( auth );
+
+					this.emitter.emit( 'user.login' );
+				}
 			}
 		}
-	}
 }
 </script>
+
+<style scoped>
+
+</style>
